@@ -108,6 +108,12 @@ python manage.py createsuperuser
 ```
 \* Must Access Web Container Shell First
 
+**Execute Django Tests:**
+```python
+python manage.py test
+```
+\* Must Access Web Container Shell First
+
 ## Notes
 - PostgreSQL Data Persists in a Docker Volume
 - The migrations Container Runs Once on Startup and Exits

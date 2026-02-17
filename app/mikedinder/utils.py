@@ -6,7 +6,9 @@ from .models import Restaurant
 
 
 class RestaurantSearchService:
-    """Service to parse hours and search for open restaurants."""
+    """
+    Util Class to Parse Hours and Search for Open Restaurants.
+    """
 
     # Day Name to Number Mapping
     DAY_MAP = {
@@ -22,17 +24,17 @@ class RestaurantSearchService:
     @classmethod
     def parse_time(cls, time_str) -> int:
         """
-        Parse time string like '11:00 am', '11 am', '12 pm' to minutes since midnight.
+        Parse Time String Like '11:00 am', '11 am', '12 pm' to Minutes From Midnight.
 
         Args:
-            time_str: String like "11:00 am" or "11 am"
+            time_str: String Like "11:00 am" or "11 am"
 
         Returns:
-            Integer minutes since midnight (0-1439)
+            Integer Minutes Since Midnight (0-1439)
         """
         time_str = time_str.strip().lower()
 
-        # Match patterns like "11:00 am", "11 am", "12:30 pm"
+        # Match Patterns Like "11:00 am", "11 am", "12:30 pm"
         match = re.match(r'(\d{1,2})(?::(\d{2}))?\s*(am|pm)', time_str)
         if not match:
             return None
@@ -41,7 +43,7 @@ class RestaurantSearchService:
         minute = int(match.group(2)) if match.group(2) else 0
         period = match.group(3)
 
-        # Convert to 24-hour format
+        # Convert to 24-Hour Format
         if period == 'pm' and hour != 12:
             hour += 12
         elif period == 'am' and hour == 12:
@@ -52,13 +54,13 @@ class RestaurantSearchService:
     @classmethod
     def parse_day_range(cls, day_str) -> list:
         """
-        Parse day range like 'Mon-Fri' or single day like 'Sat'.
+        Parse Day Range Like 'Mon-Fri' or Single Day Like 'Sat'.
 
         Args:
-            day_str: String like "Mon-Fri" or "Sat"
+            day_str: String Like "Mon-Fri" or "Sat"
 
         Returns:
-            List of day numbers (0=Sunday, 6=Saturday)
+            List of Day Numbers (0=Sunday, 6=Saturday)
         """
         day_str = day_str.strip().lower()
 
@@ -74,11 +76,11 @@ class RestaurantSearchService:
             if start_num is None or end_num is None:
                 return []
 
-            # Handle Wraparound (e.g., Fri-Sat would be [5, 6])
+            # Handle Wraparound (e.g., Mon-Sat Would Be [1, 6])
             if start_num <= end_num:
                 return list(range(start_num, end_num + 1))
             else:
-                # Wraparound Case (shouldn't happen in typical data but handle it)
+                # Wraparound Case (e.g., Sat-Sun Would Be [6, 0])
                 return list(range(start_num, 7)) + list(range(0, end_num + 1))
         else:
             # Single Day Like "Sat"
@@ -88,13 +90,13 @@ class RestaurantSearchService:
     @classmethod
     def parse_hours(cls, hours_str) -> list[tuple[list, int, int]]:
         """
-        Parse the hours string and return a list of operating periods.
+        Parse the Hours String and Return a List of Operating Periods.
 
         Args:
-            hours_str: String like "Mon-Fri 11 am - 10 pm / Sat 11 am - 12 pm"
+            hours_str: String Like "Mon-Fri 11 am - 10 pm / Sat 11 am - 12 pm"
 
         Returns:
-            List of tuples: [(days_list, start_minutes, end_minutes), ...]
+            List of Tuples: [(days_list, start_minutes, end_minutes), ...]
         """
         periods = []
 
@@ -158,11 +160,11 @@ class RestaurantSearchService:
     @classmethod
     def is_restaurant_open(cls, restaurant, check_datetime) -> bool:
         """
-        Check if a restaurant is open at the given datetime.
+        Check if a Restaurant is Open at the Given datetime.
 
         Args:
-            restaurant: Restaurant model instance
-            check_datetime: datetime object to check
+            restaurant: Restaurant Model Instance
+            check_datetime: datetime Object to Check
 
         Returns:
             Boolean Indicating if Restaurant is Open
