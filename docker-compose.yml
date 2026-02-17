@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16.11
+    container_name: postgres
+    environment:
+      POSTGRES_DB: dinder
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dinder
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-postgres.sh:/docker-entrypoint-initdb.d/init-postgres.sh
+    networks:
+      - django_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dinder"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=dinder
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=dinder
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    networks:
+      - django_network
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: migrations
+    command: sh -c "python manage.py makemigrations && python manage.py migrate"
+    volumes:
+      - ./app:/app
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=dinder
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=djangodinder_password
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - django_network
+
+volumes:
+  postgres_data:
+
+networks:
+  django_network:
+    driver: bridge
