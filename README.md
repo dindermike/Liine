@@ -48,8 +48,9 @@ project_root/
 
 ## Access Points
 
-- Django App: *http://localhost:8000*
+- Django App: *http://localhost:8000* or *http://127.0.0.1:8000*
 - PostgreSQL: *localhost:5433*
+- Endpoint: *http://localhost:8000/api/v1/restaurants/search/?datetime=2026-02-14%2023:30*
 
 ## pgAdmin Connection Settings
 
