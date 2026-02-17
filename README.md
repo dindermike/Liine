@@ -14,8 +14,9 @@ project_root/
 
 ## Requirements
 - Docker Desktop for Windows or Mac
-- Your Django Project Must Live in the `app/` Folder
-- `requirements.txt` File Must Live in the `app/` Folder
+- Your Django Project Must Live in the `/app/` Folder
+- `requirements.txt` File Must Live in the `/app/` Folder
+- Copy the entire contents of the `/app/.env.example` file into a newly created `.env` file that you create in the same `/app/` folder before running your build command.
 
 ## Quick Start
 
@@ -41,10 +42,10 @@ project_root/
 
 ## Services
 
-- **postgres**: PostgreSQL 16.11 database (port 5433 on host Windows/Mac)
+- **postgres**: PostgreSQL 16.11 database (port `5433` on host Windows/Mac)
 - **migrations**: Runs makemigrations and migrate on Startup
-- **web**: Django Development Server (port 8000 on host)
-- **web**: Must Manually Run load_restaurants on Startup, Only After First Build
+- **web**: Django Development Server (port `8000` on host)
+- **web**: Must Manually Run `load_restaurants` on Startup, Only After First Build
 
 ## Access Points
 
@@ -118,8 +119,9 @@ python manage.py test
 ## Notes
 - PostgreSQL Data Persists in a Docker Volume
 - The migrations Container Runs Once on Startup and Exits
-- Code Changes in `app/` Folder are Reflected Immediately (Volume Mounted, possible second or two delay)
+- Code Changes in `/app/` Folder are Reflected Immediately (Volume Mounted, possible second or two delay)
 - PostgreSQL is Configured to Accept Remote Connections for pgAdmin
 - Superuser is not created, fixture files do not exist. A real world project would include these for developers in a local environment use-case, but it is not needed for our GET Request and this exercise.
 - CSV File Data needs to be manually loaded on first build. In a real world scenario I would try to figure out how to include it in the Dockerfile to run only once. I couldn't figure that out and deemed it not critical to this exercise.
 - Even though I have the password scattered about this repo as an Environment Variable, I would make this a secret variable in a real world scenario and never include it in the readme and/or helper images as I did here. This project's security is not critical and for educational/demonstration purposes only.
+- Copy the entire contents of the `/app/.env.example` file into a newly created `.env` file that you create in the same `/app/` folder before running your build command.
