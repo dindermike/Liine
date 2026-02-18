@@ -21,22 +21,22 @@ project_root/
 ## Quick Start
 
 1. **Build and Start Containers:**
-   ```bash
+   ```python
    docker-compose up --build
    ```
 
 2. **Start Containers (After First Build):**
-   ```bash
+   ```python
    docker-compose up
    ```
 
 3. **Stop Containers:**
-   ```bash
+   ```python
    docker-compose down
    ```
 
 4. **Stop and Remove Volumes:**
-   ```bash
+   ```python
    docker-compose down -v
    ```
 
@@ -79,42 +79,42 @@ Connect pgAdmin on Windows to your Docker PostgreSQL:
 
 ## Common Commands
 
-**Access Web Container Shell:**
-```bash
-docker exec -it web bash
-docker-compose exec web bash
-```
+1. **Access Web Container Shell:**
+   ```python
+   docker exec -it web bash
+   docker-compose exec web bash
+   ```
 
-**Access postgres Container:**
-```python
-docker exec -it django_postgres psql -U postgres -d dinder
-docker-compose exec postgres psql -U postgres -d dinder
-```
+2. **Access postgres Container:**
+   ```python
+   docker exec -it django_postgres psql -U postgres -d dinder
+   docker-compose exec postgres psql -U postgres -d dinder
+   ```
 
-**Import Seed CSV File:**
-```python
-python manage.py load_restaurants --path app/raw_data/restaurants.csv
-```
-\* Must Access Web Container Shell First
+3. **Import Seed CSV File:**
+   ```python
+   python manage.py load_restaurants --path app/raw_data/restaurants.csv
+   ```
+   \* *Must Access Web Container Shell First*
 
-**Run Migrations Manually:**
-```python
-python manage.py makemigrations
-python manage.py migrate
-```
-\* Must Access Web Container Shell First
+4. **Run Migrations Manually:**
+   ```python
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+   \* *Must Access Web Container Shell First*
 
-**Create Superuser:**
-```python
-python manage.py createsuperuser
-```
-\* Must Access Web Container Shell First
+5. **Create Superuser:**
+   ```python
+   python manage.py createsuperuser
+   ```
+   \* *Must Access Web Container Shell First*
 
-**Execute Django Tests:**
-```python
-python manage.py test
-```
-\* Must Access Web Container Shell First
+6. **Execute Django Tests:**
+   ```python
+   python manage.py test
+   ```
+   \* *Must Access Web Container Shell First*
 
 ## Notes
 - PostgreSQL Data Persists in a Docker Volume

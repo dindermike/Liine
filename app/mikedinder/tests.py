@@ -28,7 +28,7 @@ class RestaurantsTestCase(TestCase):
     def test_get_request_1(self):
         """
         Test Successful GET Request to the Search Restaurant Endpoint.
-        Saturday 10:30 (10:30am)
+        Saturday 10:30 (10:30am) - Expected 4 Results
         """
         expected = [
             'Dashi',
@@ -60,7 +60,7 @@ class RestaurantsTestCase(TestCase):
     def test_get_request_2(self):
         """
         Test Successful GET Request to the Search Restaurant Endpoint.
-        Saturday 15:30 (3:30pm)
+        Saturday 15:30 (3:30pm) - Expected 37 Results
         """
         expected = [
             "42nd Street Oyster Bar",
@@ -125,7 +125,7 @@ class RestaurantsTestCase(TestCase):
     def test_get_request_3(self):
         """
         Test Successful GET Request to the Search Restaurant Endpoint.
-        Saturday 23:30 (11:30pm)
+        Saturday 23:30 (11:30pm) - Expected 7 Results
         """
         expected = [
             "42nd Street Oyster Bar",
@@ -160,18 +160,9 @@ class RestaurantsTestCase(TestCase):
     def test_get_request_4(self):
         """
         Test Successful GET Request to the Search Restaurant Endpoint.
-        Saturday 23:30 (11:30pm)
+        Thursday 5:30 (5:30am) - Expected Zero Results, Nothing Open
         """
-        expected = [
-            "42nd Street Oyster Bar",
-            "Bonchon",
-            "Caffe Luna",
-            "Seoul 116",
-            "Stanbury",
-            "Taverna Agora",
-            "The Cheesecake Factory"
-        ]
-        url = reverse('restaurant-search', query={'datetime': '2026-02-14 23:30'})
+        url = reverse('restaurant-search', query={'datetime': '2026-02-12 5:30'})
         response = self.client.get(url)
         data = response.json()
 
@@ -184,18 +175,15 @@ class RestaurantsTestCase(TestCase):
         self.assertIn('open_restaurants', data)
 
         # Assert Expectations
-        self.assertEqual(data['count'], 7)
-        self.assertEqual(data['datetime'], '2026-02-14 23:30')
+        self.assertEqual(data['count'], 0)
+        self.assertEqual(data['datetime'], '2026-02-12 5:30')
         self.assertIsInstance(data['open_restaurants'], list)
-        self.assertEqual(len(data['open_restaurants']), 7)
-
-        for restaurant in data['open_restaurants']:
-            self.assertIn(restaurant, expected)
+        self.assertEqual(len(data['open_restaurants']), 0)
 
     def test_get_request_5(self):
         """
         Test Successful GET Request to the Search Restaurant Endpoint.
-        Sunday 0:25 (12:25am - Midnight)
+        Sunday 0:25 (12:25am - Midnight) - Expected 3 Results
         """
         expected = [
             "Bonchon",
